@@ -184,7 +184,6 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-he
 .astat-num{font-size:28px;font-weight:800;font-family:'Space Mono',monospace;color:var(--accent);}
 .astat-label{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
 
-/* Leaderboard */
 .leaderboard-title{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--accent2);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
 .leaderboard-title::before{content:'';display:block;width:24px;height:1px;background:var(--accent2);}
 .leaderboard-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border);margin-bottom:32px;}
@@ -222,7 +221,6 @@ tr.top3 td{background:rgba(205,127,50,0.03);}
 .admin-btn-sm.green{background:rgba(0,245,160,0.12);color:var(--accent);border:1px solid rgba(0,245,160,0.3);}
 .admin-btn-sm.green:hover{background:rgba(0,245,160,0.22);}
 
-/* Participants full table */
 .section-label{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
 .section-label::before{content:'';display:block;width:24px;height:1px;background:var(--muted);}
 
@@ -251,7 +249,7 @@ tr.top3 td{background:rgba(205,127,50,0.03);}
   <div class="info-pills">
     <div class="info-pill"><strong>40</strong> savol</div>
     <div class="info-pill"><strong>1:30</strong> soat vaqt</div>
-    <div class="info-pill">Istalgan vaqtda tugatish</div>
+    <div class="info-pill">Savollar tasodifiy tartibda</div>
   </div>
   <button class="btn-primary" onclick="showPage('page-login')">
     Kirish
@@ -278,7 +276,7 @@ tr.top3 td{background:rgba(205,127,50,0.03);}
   </div>
 </div>
 
-<!-- ==================== ALREADY PASSED (score >= 13, no need for 40q) ==================== -->
+<!-- ==================== ALREADY PASSED ==================== -->
 <div id="page-already" class="page">
   <div class="already-icon">✅</div>
   <div id="already-name" style="font-size:28px;font-weight:800;"></div>
@@ -289,7 +287,6 @@ tr.top3 td{background:rgba(205,127,50,0.03);}
 
 <!-- ==================== QUIZ ==================== -->
 <div id="page-quiz" class="page" style="padding:0;align-items:stretch;justify-content:flex-start;flex-direction:column;">
-  <!-- Sticky topbar -->
   <div class="quiz-topbar">
     <div class="quiz-info-left">
       <div class="quiz-meta">Savol <span id="q-num">1</span>/<span id="q-total">40</span></div>
@@ -306,7 +303,6 @@ tr.top3 td{background:rgba(205,127,50,0.03);}
       <button class="btn-finish" onclick="confirmFinish()">⏹ Tugatish</button>
     </div>
   </div>
-  <!-- Body -->
   <div class="quiz-body">
     <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar"></div></div>
     <div class="question-num" id="q-label">SAVOL 01</div>
@@ -350,15 +346,11 @@ tr.top3 td{background:rgba(205,127,50,0.03);}
         <button class="admin-btn-sm red" onclick="adminLogout()">Chiqish</button>
       </div>
     </div>
-
-    <!-- Stats -->
     <div class="admin-stats">
       <div class="astat"><div class="astat-num" id="stat-total">0</div><div class="astat-label">Jami ishtirokchi</div></div>
       <div class="astat"><div class="astat-num" id="stat-advanced" style="color:var(--accent2)">0</div><div class="astat-label">Kengaytirilgan test</div></div>
       <div class="astat"><div class="astat-num" id="stat-avg" style="color:var(--accent)">—</div><div class="astat-label">O'rtacha ball (40)</div></div>
     </div>
-
-    <!-- LEADERBOARD -->
     <div class="leaderboard-title">🏆 Leaderboard — Top Natijalar</div>
     <div class="leaderboard-wrap">
       <table>
@@ -373,8 +365,6 @@ tr.top3 td{background:rgba(205,127,50,0.03);}
         <tbody id="leaderboard-tbody"></tbody>
       </table>
     </div>
-
-    <!-- ALL PARTICIPANTS -->
     <div class="section-label">Barcha ishtirokchilar (boshlang'ich 20 savol)</div>
     <div class="leaderboard-wrap">
       <table>
@@ -409,7 +399,6 @@ tr.top3 td{background:rgba(205,127,50,0.03);}
   </div>
 </div>
 
-<!-- Hidden admin trigger -->
 <button class="admin-trigger" id="admin-trigger" onclick="adminTriggerClick()"></button>
 
 <script>
@@ -455,52 +444,57 @@ function fv(f){
 }
 
 // ======================================================
-// 40 QUESTIONS
+// SHUFFLE UTILITY
+// Fisher-Yates shuffle — returns new shuffled array
 // ======================================================
-const QUESTIONS=[
-  // --- INFORMATIKA ASOSLARI ---
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+// ======================================================
+// 40 QUESTIONS (original bank)
+// ======================================================
+const QUESTION_BANK=[
   {q:"CPU (Markaziy protsessor) qanday asosiy funksiyani bajaradi?",opts:["Ma'lumotlarni saqlash","Ko'rsatmalarni bajarish va hisoblash","Internetga ulanish","Grafikani chiqarish"],cor:1},
   {q:"RAM (Tasodifiy kirish xotirasi) nima?",opts:["Doimiy saqlash qurilmasi","Protsessorning tarkibiy qismi","Vaqtinchalik tezkor xotira","Tarmoq kartasi"],cor:2},
   {q:"1 Terabayt (TB) necha Gigabaytga (GB) teng?",opts:["100 GB","512 GB","1000 GB","1024 GB"],cor:3},
   {q:"Quyidagilardan qaysi biri operatsion tizim hisoblanadi?",opts:["Microsoft Word","Google Chrome","Linux","Adobe Premiere"],cor:2},
   {q:"WWW (World Wide Web) nima?",opts:["Internetning o'zi","Internetdagi gipermatn hujjatlar tizimi","Elektron pochta protokoli","Tarmoq kabeli turi"],cor:1},
-  // --- TARMOQ ---
   {q:"IP manzil nima uchun ishlatiladi?",opts:["Fayllarni siqish uchun","Tarmoqdagi qurilmalarni identifikatsiya qilish uchun","Parollarni saqlash uchun","Ekran yorqinligini boshqarish uchun"],cor:1},
   {q:"DNS (Domain Name System) qanday funksiya bajaradi?",opts:["Fayllarni shifrlaydi","Domen nomlarini IP manzillarga aylantiradi","Tarmoqni kuchaytiradi","Parollarni saqlaydi"],cor:1},
   {q:"HTTP va HTTPS o'rtasidagi asosiy farq nima?",opts:["HTTPS tezroq ishlaydi","HTTPS ma'lumotlarni shifrlaydi","HTTP yangi versiyasi","Hech qanday farq yo'q"],cor:1},
   {q:"Router (marshrutizator) qanday vazifani bajaradi?",opts:["Fayllarni saqlaydi","Tarmoqlar o'rtasida ma'lumot yo'naltirishni boshqaradi","Ekranga ma'lumot chiqaradi","Klaviatura signallarini qayta ishlaydi"],cor:1},
   {q:"MAC manzil nima?",opts:["IP manzilning boshqa nomi","Tarmoq qurilmasining jismoniy (apparat) manzili","Shifrlash kalit","Protokol turi"],cor:1},
-  // --- DASTURLASH ---
   {q:"Quyidagilardan qaysi biri dasturlash tili emas?",opts:["Python","Java","HTML","Photoshop"],cor:3},
   {q:"Binary (ikkilik) sanoq sistemasida 1010 qaysi o'nlik songa teng?",opts:["8","10","12","14"],cor:1},
   {q:"'Bug' atamasi dasturlashda nimani anglatadi?",opts:["Yangi funksiya","Dasturlash tilining turi","Koddagi xato yoki nosozlik","Tezlashtirilgan algoritm"],cor:2},
   {q:"OOP (Object-Oriented Programming) asosiy tushunchasi qaysi?",opts:["Faqat funksiyalardan foydalanish","Ob'ektlar va klasslar orqali dasturlash","Faqat ikkilik kodda yozish","Faqat veb uchun dasturlash"],cor:1},
   {q:"'For loop' nima uchun ishlatiladi?",opts:["Xato tutish uchun","Muayyan shart asosida qayta-qayta amallar bajarish uchun","Ma'lumot saqlash uchun","Funksiya e'lon qilish uchun"],cor:1},
-  // --- MA'LUMOTLAR BAZASI ---
   {q:"Quyidagilardan qaysi biri ma'lumotlar bazasi boshqaruv tizimi (DBMS)?",opts:["Apache","MySQL","Nginx","React"],cor:1},
   {q:"SQL tilida ma'lumot olish uchun qaysi buyruq ishlatiladi?",opts:["INSERT","UPDATE","SELECT","DELETE"],cor:2},
   {q:"'Primary Key' nima?",opts:["Jadvalning birinchi ustuni","Har bir qatorni noyob tarzda aniqlovchi maydon","Ikki jadvalni bog'lovchi maydon","Shifrlash kaliti"],cor:1},
   {q:"NoSQL ma'lumotlar bazasining misolini toping?",opts:["MySQL","PostgreSQL","MongoDB","Oracle"],cor:2},
   {q:"SQL da 'JOIN' operatori nima uchun ishlatiladi?",opts:["Jadvallarni birlashtirish uchun","Ma'lumot o'chirish uchun","Indeks yaratish uchun","Jadval yaratish uchun"],cor:0},
-  // --- XAVFSIZLIK ---
   {q:"Firewall (xavfsizlik devori) nima?",opts:["Kompyuterni sovutish tizimi","Ruxsatsiz kirish va chiqishni nazorat qiluvchi tizim","Grafik karta turi","Zaxira quvvat manbai"],cor:1},
   {q:"'Phishing' hujumi nima?",opts:["Tarmoqni jismoniy buzish","Foydalanuvchilarni aldash orqali shaxsiy ma'lumotlarni o'g'irlash","Fayl tizimini o'chirish","Qurilmani qayta ishga tushirish"],cor:1},
   {q:"Ransomware nima?",opts:["Antivirus dasturi","Fayllarni shifrlab fidya talab qiluvchi zararli dastur","Tarmoq protokoli","Xotira optimallashtirish dasturi"],cor:1},
   {q:"Ikki faktorli autentifikatsiya (2FA) nima?",opts:["Ikkita parol kiritish","Ikki xil qurilmadan kirish","Paroldan tashqari qo'shimcha tekshiruv usuli","Ikkita foydalanuvchi nomi"],cor:2},
   {q:"VPN (Virtual Private Network) nima uchun ishlatiladi?",opts:["Internet tezligini oshirish uchun","Xavfsiz va shifrlangan tarmoq ulanishi yaratish uchun","Tasvirlarni siqish uchun","RAM ni kengaytirish uchun"],cor:1},
-  // --- APPARAT VA TIZIM ---
   {q:"SSD va HDD o'rtasidagi asosiy farq nima?",opts:["SSD kattaroq hajmga ega","HDD tezroq ishlaydi","SSD harakatlanuvchi qismlarisiz, HDD mexanik diskka ega","HDD kam elektr sarflaydi"],cor:2},
   {q:"GPU (Grafik protsessor) asosan nima uchun mo'ljallangan?",opts:["Tarmoqni boshqarish","Grafik va parallel hisoblash vazifalari uchun","Xotirani boshqarish","Ovozni qayta ishlash"],cor:1},
   {q:"BIOS/UEFI nima?",opts:["Operatsion tizim","Apparat va operatsion tizim o'rtasidagi past darajali dasturiy ta'minot","Antivirus dastur","Brauzer turi"],cor:1},
   {q:"'Cache' xotira nima uchun ishlatiladi?",opts:["Uzoq muddatli saqlash uchun","Tez-tez ishlatiladigan ma'lumotlarni vaqtincha tezkor saqlash uchun","Zaxira nusxa yaratish uchun","Internet ma'lumotlarini saqlash uchun"],cor:1},
   {q:"USB (Universal Serial Bus) nima?",opts:["Tarmoq protokoli","Qurilmalarni ulash uchun standart interfeys","Dasturlash tili","Operatsion tizim"],cor:1},
-  // --- VEBGA OID ---
   {q:"HTML nima?",opts:["Dasturlash tili","Veb-sahifalar tuzilmasini belgilovchi til","Ma'lumotlar bazasi tili","Tarmoq protokoli"],cor:1},
   {q:"CSS nima uchun ishlatiladi?",opts:["Veb sahifalar mantig'ini boshqarish uchun","Veb sahifalar vizual ko'rinishini bezash uchun","Ma'lumot uzatish uchun","Server boshqarish uchun"],cor:1},
   {q:"REST API nima?",opts:["Ma'lumotlar bazasi turi","HTTP orqali veb-xizmatlar yaratish arxitektura usuli","Antivirus protokoli","Tarmoq kabeli standarti"],cor:1},
   {q:"'Responsive design' nima?",opts:["Tez yuklanadigan dizayn","Turli ekran o'lchamlariga moslashadigan dizayn","3D dizayn","Animatsiyali dizayn"],cor:1},
   {q:"Cookie fayllar nima uchun ishlatiladi?",opts:["Viruslardan himoya qilish uchun","Brauzer tomonidan foydalanuvchi ma'lumotlarini vaqtincha saqlash uchun","Fayllarni siqish uchun","Tarmoq tezligini oshirish uchun"],cor:1},
-  // --- ALGORITM VA MANTIQ ---
   {q:"'Algorithm' so'zi nima ma'noni anglatadi?",opts:["Kompyuter virusi turi","Muammoni hal qilish uchun ketma-ket ko'rsatmalar to'plami","Xotira turi","Tarmoq protokoli"],cor:1},
   {q:"Qaysi saralash algoritmi eng yomon holatda O(n²) vaqt murakkabligiga ega?",opts:["Merge Sort","Quick Sort (eng yomon holat)","Heap Sort","Binary Search"],cor:1},
   {q:"Binary Search algoritmi qanday ishlaydi?",opts:["Har bir elementni ketma-ket tekshiradi","Saralangan ro'yxatni yarmiga bo'lib qidiradi","Elementlarni almashtiradi","Ro'yxatni qayta saralaydi"],cor:1},
@@ -510,9 +504,32 @@ const QUESTIONS=[
 ];
 
 // ======================================================
+// RANDOMIZE: shuffle questions AND options per session
+// Returns array of {q, opts (shuffled), cor (new index)}
+// ======================================================
+function buildShuffledQuiz(){
+  // 1. Shuffle question order
+  const shuffledQs = shuffle(QUESTION_BANK);
+
+  // 2. For each question, shuffle answer options (keeping correct answer tracked)
+  return shuffledQs.map(orig => {
+    // Build indexed options: [{text, isCorrect}]
+    const indexed = orig.opts.map((text, i) => ({text, isCorrect: i === orig.cor}));
+    const shuffledOpts = shuffle(indexed);
+    const newCorIdx = shuffledOpts.findIndex(o => o.isCorrect);
+    return {
+      q: orig.q,
+      opts: shuffledOpts.map(o => o.text),
+      cor: newCorIdx
+    };
+  });
+}
+
+// ======================================================
 // STATE
 // ======================================================
 let userData={};
+let QUESTIONS=[]; // will be filled with shuffled quiz
 let currentQ=0;
 let answers=new Array(40).fill(null);
 let selected=null;
@@ -520,7 +537,7 @@ let qTimerInterval=null;
 let qTimeLeft=60;
 let answered=false;
 let globalTimerInterval=null;
-let globalTimeLeft=90*60; // 5400 seconds = 1.5 soat
+let globalTimeLeft=90*60;
 let quizStarted=false;
 
 // ======================================================
@@ -546,7 +563,6 @@ async function doLogin(){
     msg.style.display='block';return;
   }
 
-  // Normalize phone: remove spaces, dashes, parens
   const phone=phoneRaw.replace(/[\s\-\(\)]/g,'');
 
   btn.disabled=true;spin.style.display='block';btnText.textContent='Tekshirilmoqda...';
@@ -554,7 +570,6 @@ async function doLogin(){
 
   try{
     const docs=await fbQuery('participants');
-    // Find by phone (normalize stored phones too)
     const found=docs.find(d=>{
       const stored=fv(d.fields?.phone).replace(/[\s\-\(\)]/g,'');
       return stored===phone;
@@ -574,14 +589,14 @@ async function doLogin(){
 
     userData={firstName, lastName, grade, phone, gender, score20: score};
 
-    // Check: score < 13 → cannot enter advanced test
     if(score < 13){
       msg.textContent=`${firstName}, siz ${score}/20 ball oldingiz. Kengaytirilgan testga kirish uchun kamida 13 ball kerak.`;
       msg.style.display='block';
       return;
     }
 
-    // score >= 13 → start 40q test
+    // Build fresh shuffled quiz for this session
+    QUESTIONS = buildShuffledQuiz();
     currentQ=0;
     answers=new Array(40).fill(null);
     selected=null;
@@ -598,7 +613,7 @@ async function doLogin(){
 }
 
 // ======================================================
-// GLOBAL TIMER (1:30:00)
+// GLOBAL TIMER
 // ======================================================
 function startGlobalTimer(){
   clearInterval(globalTimerInterval);
@@ -612,7 +627,6 @@ function startGlobalTimer(){
       clearInterval(globalTimerInterval);
       clearInterval(qTimerInterval);
       quizStarted=false;
-      // Time up — force finish
       forceFinish();
     }
   },1000);
@@ -634,16 +648,14 @@ function updateGlobalTimer(){
 }
 
 function forceFinish(){
-  // save answers as-is, auto-answer unanswered
-  answers.forEach((a,i)=>{ if(a===null) answers[i]=null; });
   clearInterval(qTimerInterval);
   showResult(true);
 }
 
 function confirmFinish(){
-  const answered40=answers.filter(a=>a!==null).length;
-  const unanswered=40-answered40;
-  let confirmMsg=`Testni yakunlamoqchimisiz?\n\nJavob berilgan: ${answered40}/40`;
+  const answeredCount=answers.filter(a=>a!==null).length;
+  const unanswered=40-answeredCount;
+  let confirmMsg=`Testni yakunlamoqchimisiz?\n\nJavob berilgan: ${answeredCount}/40`;
   if(unanswered>0) confirmMsg+=`\nJavob berilmagan: ${unanswered} ta savol`;
   if(confirm(confirmMsg)){
     clearInterval(globalTimerInterval);
@@ -703,7 +715,6 @@ function updateQTimer(){
 function autoAnswer(){
   if(answered)return;
   answered=true;
-  // answers[currentQ] stays null (no answer)
   showCorrect();
   document.getElementById('btn-next').style.display='block';
 }
@@ -750,7 +761,6 @@ function showResult(timeUp=false){
 
   showPage('page-result');
 
-  // Animate ring
   const circumf=2*Math.PI*70;
   const offset=circumf-(score/40)*circumf;
   const ring=document.getElementById('ring-fill');
@@ -758,7 +768,6 @@ function showResult(timeUp=false){
   ring.style.strokeDasharray=circumf;
   setTimeout(()=>{ring.style.strokeDashoffset=offset;},100);
 
-  // Animate number
   let n=0;
   const step=()=>{if(n<score){n++;document.getElementById('ring-num').textContent=n;setTimeout(step,40);}};
   setTimeout(step,200);
@@ -844,7 +853,6 @@ function doAdminLogin(){
 function adminLogout(){showPage('page-welcome');}
 
 async function fetchAdminData(){
-  // Leaderboard
   const lbTbody=document.getElementById('leaderboard-tbody');
   const pTbody=document.getElementById('participants-tbody');
   lbTbody.innerHTML=`<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px;font-family:'Space Mono',monospace;font-size:12px;">Yuklanmoqda...</td></tr>`;
@@ -856,7 +864,6 @@ async function fetchAdminData(){
       fbQuery('participants')
     ]);
 
-    // Stats
     const total=partDocs.length;
     const advanced=advDocs.length;
     const scores=advDocs.map(d=>Number(fv(d.fields?.score40)));
@@ -865,7 +872,6 @@ async function fetchAdminData(){
     document.getElementById('stat-advanced').textContent=advanced;
     document.getElementById('stat-avg').textContent=avg!==null?avg+'':'—';
 
-    // LEADERBOARD — sort by score40 desc
     const sorted=[...advDocs].sort((a,b)=>Number(fv(b.fields?.score40))-Number(fv(a.fields?.score40)));
     lbTbody.innerHTML='';
     if(!sorted.length){
@@ -904,7 +910,6 @@ async function fetchAdminData(){
       });
     }
 
-    // PARTICIPANTS TABLE
     const partSorted=[...partDocs].sort((a,b)=>
       (b.fields?.createdAt?.timestampValue||'').localeCompare(a.fields?.createdAt?.timestampValue||''));
     pTbody.innerHTML='';
@@ -949,7 +954,6 @@ async function handleDel(name,btn){
   }
 }
 
-// F2 = Admin modal | Escape = close modal
 document.addEventListener('keydown',e=>{
   if(e.key==='F2'){openAdminModal();}
   if(e.key==='Escape'){closeAdminModal();}
@@ -960,4 +964,4 @@ document.getElementById('admin-modal-overlay').addEventListener('click',function
 });
 </script>
 </body>
-</html> 
+</html>
