@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>IT TANLOV 2025 — Kengaytirilgan Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#04080f;
+  --surface:#080e1a;
+  --surface2:#0c1525;
+  --border:#1a2540;
+  --accent:#00f5a0;
+  --accent2:#00d4ff;
+  --accent3:#ff6b35;
+  --text:#e8f0fe;
+  --muted:#5a7090;
+  --danger:#ff4545;
+  --success:#00f5a0;
+  --gold:#ffd700;
+  --silver:#c0c0c0;
+  --bronze:#cd7f32;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+
+.bg-grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(0,245,160,0.03) 1px, transparent 1px),linear-gradient(90deg, rgba(0,245,160,0.03) 1px, transparent 1px);background-size:40px 40px;pointer-events:none;}
+.bg-glow{position:fixed;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle, rgba(0,245,160,0.06) 0%, transparent 70%);pointer-events:none;z-index:0;top:-200px;left:-200px;animation:driftGlow 12s ease-in-out infinite alternate;}
+.bg-glow2{position:fixed;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle, rgba(0,212,255,0.05) 0%, transparent 70%);pointer-events:none;z-index:0;bottom:-100px;right:-100px;animation:driftGlow2 9s ease-in-out infinite alternate;}
+@keyframes driftGlow{0%{transform:translate(0,0)}100%{transform:translate(120px,80px)}}
+@keyframes driftGlow2{0%{transform:translate(0,0)}100%{transform:translate(-80px,-60px)}}
+
+.page{position:relative;z-index:1;display:none;min-height:100vh;align-items:center;justify-content:center;padding:24px;flex-direction:column;}
+.page.active{display:flex;}
+
+@keyframes fadeSlideDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+@keyframes urgentPulse{from{opacity:1}to{opacity:0.5}}
+@keyframes spinIt{to{transform:rotate(360deg)}}
+
+/* ==================== WELCOME ==================== */
+#page-welcome{text-align:center;gap:0;}
+.logo-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,245,160,0.08);border:1px solid rgba(0,245,160,0.25);border-radius:100px;padding:6px 16px;font-family:'Space Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:2px;margin-bottom:32px;animation:fadeSlideDown 0.6s ease;}
+.logo-badge span{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1.5s ease infinite;}
+.hero-title{font-size:clamp(48px,10vw,96px);font-weight:800;line-height:0.95;letter-spacing:-3px;animation:fadeSlideDown 0.7s 0.1s both ease;}
+.hero-title .line1{display:block;background:linear-gradient(135deg,#fff 0%,rgba(255,255,255,0.6) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-title .line2{display:block;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{margin-top:20px;color:var(--muted);font-size:15px;line-height:1.7;max-width:460px;margin-inline:auto;animation:fadeSlideDown 0.7s 0.2s both ease;}
+.info-pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:32px 0;animation:fadeSlideDown 0.7s 0.3s both ease;}
+.info-pill{padding:8px 16px;border-radius:100px;background:var(--surface2);border:1px solid var(--border);font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);}
+.info-pill strong{color:var(--accent2);}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;padding:16px 40px;background:var(--accent);color:#04080f;border:none;border-radius:4px;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all 200ms;letter-spacing:0.5px;animation:fadeSlideDown 0.7s 0.4s both ease;}
+.btn-primary:hover{background:#00e090;transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,245,160,0.35);}
+.btn-primary svg{transition:transform 200ms;}
+.btn-primary:hover svg{transform:translateX(4px);}
+
+/* ==================== LOGIN ==================== */
+#page-login{gap:0;}
+.login-card{width:100%;max-width:420px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:40px;animation:slideUp 0.5s ease;}
+.step-label{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.step-label::before{content:'';display:block;width:24px;height:1px;background:var(--accent);}
+.card-title{font-size:26px;font-weight:800;letter-spacing:-0.5px;margin-bottom:6px;}
+.card-desc{color:var(--muted);font-size:13px;line-height:1.6;margin-bottom:28px;}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.field label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-family:'Space Mono',monospace;}
+.field input{background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:13px 14px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;transition:border-color 150ms,box-shadow 150ms;}
+.field input:focus{outline:none;border-color:rgba(0,245,160,0.5);box-shadow:0 0 0 3px rgba(0,245,160,0.08);}
+.field input::placeholder{color:var(--muted);}
+.btn-submit{padding:14px;background:var(--accent);color:#04080f;border:none;border-radius:4px;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;cursor:pointer;width:100%;transition:all 200ms;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-submit:hover{background:#00e090;box-shadow:0 8px 30px rgba(0,245,160,0.3);}
+.btn-submit:disabled{background:#1a2a20;color:#3a5040;cursor:not-allowed;}
+.msg-box{padding:12px 16px;border-radius:4px;font-size:13px;display:none;margin-top:12px;font-family:'Space Mono',monospace;}
+.msg-box.err{background:rgba(255,69,69,0.1);border:1px solid rgba(255,69,69,0.3);color:#ff8080;}
+.msg-box.ok{background:rgba(0,245,160,0.1);border:1px solid rgba(0,245,160,0.3);color:var(--accent);}
+.spin{width:16px;height:16px;border:2px solid rgba(4,8,15,0.3);border-top-color:#04080f;border-radius:50%;animation:spinIt 0.6s linear infinite;display:none;}
+.back-link{text-align:center;margin-top:16px;font-size:13px;color:var(--muted);cursor:pointer;transition:color 150ms;}
+.back-link:hover{color:var(--text);}
+
+/* ==================== ALREADY PASSED ==================== */
+#page-already{text-align:center;gap:20px;}
+.already-icon{font-size:64px;}
+.score-big{font-family:'Space Mono',monospace;font-size:64px;font-weight:700;color:var(--accent);line-height:1;}
+.score-big small{font-size:24px;color:var(--muted);}
+
+/* ==================== QUIZ ==================== */
+#page-quiz{gap:0;padding:0;align-items:stretch;justify-content:flex-start;}
+
+.quiz-topbar{
+  position:sticky;top:0;z-index:10;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:14px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
+}
+.quiz-info-left{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.quiz-meta{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);}
+.quiz-meta span{color:var(--text);}
+.quiz-meta strong{color:var(--accent);}
+
+.global-timer{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(0,212,255,0.08);
+  border:1px solid rgba(0,212,255,0.2);
+  border-radius:6px;padding:8px 16px;
+  font-family:'Space Mono',monospace;font-size:18px;font-weight:700;color:var(--accent2);
+}
+.global-timer.warn{background:rgba(255,107,53,0.1);border-color:rgba(255,107,53,0.3);color:var(--accent3);}
+.global-timer.danger{background:rgba(255,69,69,0.15);border-color:rgba(255,69,69,0.4);color:var(--danger);animation:urgentPulse 0.6s ease infinite alternate;}
+
+.q-timer-badge{display:flex;align-items:center;gap:6px;background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.3);border-radius:4px;padding:5px 10px;font-family:'Space Mono',monospace;font-size:12px;color:var(--accent3);}
+.q-timer-badge.urgent{background:rgba(255,69,69,0.15);border-color:rgba(255,69,69,0.4);color:var(--danger);animation:urgentPulse 0.6s ease infinite alternate;}
+
+.btn-finish{padding:8px 20px;background:rgba(255,69,69,0.15);border:1px solid rgba(255,69,69,0.4);border-radius:4px;color:var(--danger);font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all 150ms;}
+.btn-finish:hover{background:rgba(255,69,69,0.28);}
+
+.quiz-body{flex:1;padding:28px 24px;max-width:780px;width:100%;margin:0 auto;}
+
+.progress-bar-wrap{height:3px;background:var(--border);border-radius:2px;margin-bottom:28px;overflow:hidden;}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 400ms ease;border-radius:2px;}
+
+.question-num{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:10px;}
+.question-text{font-size:clamp(16px,2.5vw,20px);font-weight:700;line-height:1.5;margin-bottom:24px;letter-spacing:-0.2px;}
+
+.options-grid{display:grid;gap:10px;}
+.option-btn{display:flex;align-items:flex-start;gap:14px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:14px 18px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;cursor:pointer;width:100%;text-align:left;transition:all 150ms;line-height:1.4;}
+.option-btn:hover:not(:disabled){border-color:rgba(0,245,160,0.4);background:rgba(0,245,160,0.05);}
+.option-btn .opt-letter{flex-shrink:0;width:26px;height:26px;border-radius:4px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--muted);transition:all 150ms;margin-top:1px;}
+.option-btn.selected{border-color:var(--accent);background:rgba(0,245,160,0.08);}
+.option-btn.selected .opt-letter{background:var(--accent);color:#04080f;}
+.option-btn.correct{border-color:var(--success);background:rgba(0,245,160,0.12);}
+.option-btn.correct .opt-letter{background:var(--success);color:#04080f;}
+.option-btn.wrong{border-color:var(--danger);background:rgba(255,69,69,0.1);}
+.option-btn.wrong .opt-letter{background:var(--danger);color:white;}
+.option-btn:disabled{cursor:default;}
+
+.quiz-nav{display:flex;justify-content:flex-end;margin-top:20px;}
+.btn-next{padding:12px 28px;background:var(--accent);color:#04080f;border:none;border-radius:4px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 200ms;display:none;}
+.btn-next:hover{background:#00e090;transform:translateY(-1px);}
+
+/* ==================== RESULT ==================== */
+#page-result{text-align:center;gap:24px;}
+.result-ring{position:relative;width:160px;height:160px;margin:0 auto;}
+.result-ring svg{transform:rotate(-90deg);}
+.ring-bg{stroke:var(--border);}
+.ring-fill{stroke-dasharray:440;stroke-dashoffset:440;transition:stroke-dashoffset 1.5s cubic-bezier(.16,1,.3,1);}
+.ring-score{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.ring-num{font-size:40px;font-weight:800;font-family:'Space Mono',monospace;line-height:1;}
+.ring-total{font-size:13px;color:var(--muted);margin-top:2px;}
+.result-verdict{font-size:clamp(24px,5vw,36px);font-weight:800;letter-spacing:-1px;}
+.result-verdict.pass{color:var(--accent);}
+.result-desc{color:var(--muted);font-size:14px;line-height:1.6;max-width:400px;margin:0 auto;}
+.result-badges{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.rbadge{padding:8px 18px;border-radius:4px;font-size:12px;font-family:'Space Mono',monospace;letter-spacing:0.5px;}
+.rbadge.pass{background:rgba(0,245,160,0.1);border:1px solid rgba(0,245,160,0.3);color:var(--accent);}
+.rbadge.fail{background:rgba(255,69,69,0.1);border:1px solid rgba(255,69,69,0.3);color:var(--danger);}
+.rbadge.neutral{background:var(--surface2);border:1px solid var(--border);color:var(--muted);}
+.btn-retry{padding:12px 28px;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:4px;font-family:'Syne',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all 200ms;}
+.btn-retry:hover{border-color:var(--muted);color:var(--text);}
+
+/* ==================== ADMIN MODAL ==================== */
+.modal-overlay{position:fixed;inset:0;z-index:100;background:rgba(4,8,15,0.85);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:24px;}
+.modal-overlay.active{display:flex;}
+.admin-modal{width:100%;max-width:380px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:36px;animation:slideUp 0.3s ease;position:relative;}
+.admin-modal-close{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:4px 8px;border-radius:4px;transition:color 150ms;}
+.admin-modal-close:hover{color:var(--text);}
+.admin-who{display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(0,245,160,0.06);border:1px solid rgba(0,245,160,0.15);border-radius:6px;margin-bottom:20px;}
+.admin-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#04080f;flex-shrink:0;}
+.admin-who-name{font-weight:700;font-size:14px;}
+.admin-who-role{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;letter-spacing:1px;}
+.modal-title{font-size:22px;font-weight:800;margin-bottom:4px;}
+.modal-desc{color:var(--muted);font-size:13px;margin-bottom:24px;}
+
+/* ==================== ADMIN PAGE ==================== */
+#page-admin{display:none;flex-direction:column;padding:32px 24px;gap:0;align-items:flex-start;min-height:100vh;}
+#page-admin.active{display:flex;}
+.admin-panel{width:100%;}
+.admin-panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
+.admin-panel-header h2{font-size:24px;font-weight:800;}
+.admin-stats{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:28px;}
+.astat{padding:14px 20px;background:var(--surface);border:1px solid var(--border);border-radius:6px;}
+.astat-num{font-size:28px;font-weight:800;font-family:'Space Mono',monospace;color:var(--accent);}
+.astat-label{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+
+/* Leaderboard */
+.leaderboard-title{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--accent2);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.leaderboard-title::before{content:'';display:block;width:24px;height:1px;background:var(--accent2);}
+.leaderboard-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border);margin-bottom:32px;}
+
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{padding:12px 14px;background:var(--surface2);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;}
+td{padding:11px 14px;border-bottom:1px solid rgba(26,37,64,0.5);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,0.02);}
+tr.top1 td{background:rgba(255,215,0,0.04);}
+tr.top2 td{background:rgba(192,192,192,0.03);}
+tr.top3 td{background:rgba(205,127,50,0.03);}
+
+.rank-cell{font-family:'Space Mono',monospace;font-size:16px;text-align:center;width:50px;}
+.medal{font-size:20px;}
+
+.score-bar-wrap{display:flex;align-items:center;gap:10px;}
+.score-bar{height:6px;border-radius:3px;background:var(--border);flex:1;min-width:60px;overflow:hidden;}
+.score-bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 1s ease;}
+.score-num{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;white-space:nowrap;}
+.score-num.gold{color:var(--gold);}
+.score-num.silver{color:var(--silver);}
+.score-num.bronze{color:var(--bronze);}
+.score-num.normal{color:var(--accent);}
+
+.del-btn{padding:5px 12px;background:transparent;border:1px solid rgba(255,69,69,0.3);border-radius:4px;color:var(--danger);font-size:11px;cursor:pointer;transition:all 150ms;font-family:'Space Mono',monospace;}
+.del-btn:hover{background:rgba(255,69,69,0.15);}
+
+.admin-btn-group{display:flex;gap:8px;}
+.admin-btn-sm{padding:8px 16px;border:none;border-radius:4px;font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 150ms;}
+.admin-btn-sm.blue{background:rgba(0,212,255,0.15);color:var(--accent2);border:1px solid rgba(0,212,255,0.3);}
+.admin-btn-sm.blue:hover{background:rgba(0,212,255,0.25);}
+.admin-btn-sm.red{background:rgba(255,69,69,0.15);color:var(--danger);border:1px solid rgba(255,69,69,0.3);}
+.admin-btn-sm.red:hover{background:rgba(255,69,69,0.25);}
+.admin-btn-sm.green{background:rgba(0,245,160,0.12);color:var(--accent);border:1px solid rgba(0,245,160,0.3);}
+.admin-btn-sm.green:hover{background:rgba(0,245,160,0.22);}
+
+/* Participants full table */
+.section-label{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.section-label::before{content:'';display:block;width:24px;height:1px;background:var(--muted);}
+
+.admin-trigger{position:fixed;bottom:16px;right:16px;z-index:50;width:32px;height:32px;background:transparent;border:none;cursor:pointer;opacity:0;}
+
+@media(max-width:600px){
+  .quiz-topbar{padding:12px 16px;}
+  .global-timer{font-size:14px;padding:6px 12px;}
+  .quiz-body{padding:20px 16px;}
+}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="bg-glow2"></div>
+
+<!-- ==================== WELCOME ==================== -->
+<div id="page-welcome" class="page active">
+  <div class="logo-badge"><span></span> IT TANLOV 2025 — FINAL</div>
+  <h1 class="hero-title">
+    <span class="line1">Kengaytirilgan</span>
+    <span class="line2">Test</span>
+  </h1>
+  <p class="hero-sub">Ro'yxatdan o'tgan ishtirokchilar uchun 40 ta savollik kengaytirilgan test. Telefon raqamingiz bilan kiring.</p>
+  <div class="info-pills">
+    <div class="info-pill"><strong>40</strong> savol</div>
+    <div class="info-pill"><strong>1:30</strong> soat vaqt</div>
+    <div class="info-pill">Istalgan vaqtda tugatish</div>
+  </div>
+  <button class="btn-primary" onclick="showPage('page-login')">
+    Kirish
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </button>
+</div>
+
+<!-- ==================== LOGIN ==================== -->
+<div id="page-login" class="page">
+  <div class="login-card">
+    <div class="step-label">Tizimga Kirish</div>
+    <div class="card-title">Telefon raqam</div>
+    <div class="card-desc">Ro'yxatdan o'tganingizda kiritgan telefon raqamingizni kiriting.</div>
+    <div class="field">
+      <label>Telefon raqami</label>
+      <input type="tel" id="login-phone" placeholder="+998 90 123 45 67" onkeydown="if(event.key==='Enter')doLogin()"/>
+    </div>
+    <button class="btn-submit" id="login-btn" onclick="doLogin()">
+      <div class="spin" id="login-spin"></div>
+      <span id="login-btn-text">Tekshirish →</span>
+    </button>
+    <div class="msg-box err" id="login-msg"></div>
+    <div class="back-link" onclick="showPage('page-welcome')">← Orqaga</div>
+  </div>
+</div>
+
+<!-- ==================== ALREADY PASSED (score >= 13, no need for 40q) ==================== -->
+<div id="page-already" class="page">
+  <div class="already-icon">✅</div>
+  <div id="already-name" style="font-size:28px;font-weight:800;"></div>
+  <div class="score-big" id="already-score">0 <small>/ 20</small></div>
+  <p style="color:var(--muted);font-size:14px;max-width:380px;text-align:center;line-height:1.7;" id="already-desc"></p>
+  <button class="btn-retry" onclick="showPage('page-welcome')">← Bosh sahifa</button>
+</div>
+
+<!-- ==================== QUIZ ==================== -->
+<div id="page-quiz" class="page" style="padding:0;align-items:stretch;justify-content:flex-start;flex-direction:column;">
+  <!-- Sticky topbar -->
+  <div class="quiz-topbar">
+    <div class="quiz-info-left">
+      <div class="quiz-meta">Savol <span id="q-num">1</span>/<span id="q-total">40</span></div>
+      <div class="q-timer-badge" id="q-timer-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span id="q-timer-display">60</span>s
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="global-timer" id="global-timer">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span id="global-timer-display">1:30:00</span>
+      </div>
+      <button class="btn-finish" onclick="confirmFinish()">⏹ Tugatish</button>
+    </div>
+  </div>
+  <!-- Body -->
+  <div class="quiz-body">
+    <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+    <div class="question-num" id="q-label">SAVOL 01</div>
+    <div class="question-text" id="q-text"></div>
+    <div class="options-grid" id="q-options"></div>
+    <div class="quiz-nav">
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">Keyingisi →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== RESULT ==================== -->
+<div id="page-result" class="page">
+  <div class="result-ring">
+    <svg width="160" height="160" viewBox="0 0 160 160">
+      <circle class="ring-bg" cx="80" cy="80" r="70" fill="none" stroke-width="8"/>
+      <circle class="ring-fill" id="ring-fill" cx="80" cy="80" r="70" fill="none" stroke-width="8" stroke-linecap="round"/>
+    </svg>
+    <div class="ring-score">
+      <div class="ring-num" id="ring-num">0</div>
+      <div class="ring-total">/ 40</div>
+    </div>
+  </div>
+  <div class="result-verdict" id="result-verdict"></div>
+  <p class="result-desc" id="result-desc"></p>
+  <div class="result-badges" id="result-badges"></div>
+  <div id="save-status" style="font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);margin-top:4px;"></div>
+  <button class="btn-retry" onclick="showPage('page-welcome')">← Bosh sahifa</button>
+</div>
+
+<!-- ==================== ADMIN PAGE ==================== -->
+<div id="page-admin" class="page">
+  <div class="admin-panel">
+    <div class="admin-panel-header">
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--accent);margin-bottom:6px;">ADMIN PANEL</div>
+        <h2>Natijalar & Reyting</h2>
+      </div>
+      <div class="admin-btn-group">
+        <button class="admin-btn-sm green" onclick="fetchAdminData()">↻ Yangilash</button>
+        <button class="admin-btn-sm red" onclick="adminLogout()">Chiqish</button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="admin-stats">
+      <div class="astat"><div class="astat-num" id="stat-total">0</div><div class="astat-label">Jami ishtirokchi</div></div>
+      <div class="astat"><div class="astat-num" id="stat-advanced" style="color:var(--accent2)">0</div><div class="astat-label">Kengaytirilgan test</div></div>
+      <div class="astat"><div class="astat-num" id="stat-avg" style="color:var(--accent)">—</div><div class="astat-label">O'rtacha ball (40)</div></div>
+    </div>
+
+    <!-- LEADERBOARD -->
+    <div class="leaderboard-title">🏆 Leaderboard — Top Natijalar</div>
+    <div class="leaderboard-wrap">
+      <table>
+        <thead><tr>
+          <th style="text-align:center;">O'rin</th>
+          <th>Ism Familiya</th>
+          <th>Sinf</th>
+          <th>Ball (40dan)</th>
+          <th>Foiz</th>
+          <th>Vaqt</th>
+        </tr></thead>
+        <tbody id="leaderboard-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- ALL PARTICIPANTS -->
+    <div class="section-label">Barcha ishtirokchilar (boshlang'ich 20 savol)</div>
+    <div class="leaderboard-wrap">
+      <table>
+        <thead><tr>
+          <th>#</th><th>Ism Familiya</th><th>Sinf</th><th>Telefon</th><th>Ball (20)</th><th>Holat</th><th>Vaqt</th><th>O'chirish</th>
+        </tr></thead>
+        <tbody id="participants-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ADMIN MODAL ==================== -->
+<div class="modal-overlay" id="admin-modal-overlay">
+  <div class="admin-modal">
+    <button class="admin-modal-close" onclick="closeAdminModal()">✕</button>
+    <div class="admin-who">
+      <div class="admin-avatar">RF</div>
+      <div>
+        <div class="admin-who-name">Roziboyev Fazliddin</div>
+        <div class="admin-who-role">Administrator</div>
+      </div>
+    </div>
+    <div class="modal-title">Admin Kirish</div>
+    <div class="modal-desc">Parolingizni kiriting</div>
+    <div class="field" style="margin-bottom:16px;">
+      <label>Parol</label>
+      <input type="password" id="admin-pass-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminLogin()"/>
+    </div>
+    <button class="btn-submit" onclick="doAdminLogin()">Kirish</button>
+    <div class="msg-box err" id="admin-modal-msg" style="margin-top:12px;"></div>
+  </div>
+</div>
+
+<!-- Hidden admin trigger -->
+<button class="admin-trigger" id="admin-trigger" onclick="adminTriggerClick()"></button>
+
+<script>
+// ======================================================
+// FIREBASE CONFIG
+// ======================================================
+const FB_PROJECT = "itevent-6cf7f";
+const FB_DB      = "itevent";
+const FB_KEY     = "AIzaSyDQ5QZsG04X9Pvs15iN5VMqLZ4XhW5bi1k";
+const FB_BASE    = `https://firestore.googleapis.com/v1/projects/${FB_PROJECT}/databases/${FB_DB}/documents`;
+
+async function fbAdd(col, data){
+  const fields={};
+  for(const [k,v] of Object.entries(data)){
+    if(typeof v==='string') fields[k]={stringValue:v};
+    else if(typeof v==='number') fields[k]={integerValue:v};
+  }
+  fields.createdAt={timestampValue:new Date().toISOString()};
+  const r=await fetch(`${FB_BASE}/${col}?key=${FB_KEY}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields})});
+  if(!r.ok){const e=await r.json();throw new Error(e.error?.message||'Xato');}
+  return r.json();
+}
+
+async function fbQuery(col){
+  const url=`https://firestore.googleapis.com/v1/projects/${FB_PROJECT}/databases/${FB_DB}/documents:runQuery?key=${FB_KEY}`;
+  const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({structuredQuery:{from:[{collectionId:col}],limit:1000}})});
+  if(!r.ok){const e=await r.json();throw new Error(e.error?.message||'Xato');}
+  const d=await r.json();
+  return d.filter(i=>i.document).map(i=>i.document);
+}
+
+async function fbDelete(name){
+  const r=await fetch(`https://firestore.googleapis.com/v1/${name}?key=${FB_KEY}`,{method:'DELETE'});
+  if(!r.ok)throw new Error("O'chirishda xato");
+}
+
+function fv(f){
+  if(!f)return'';
+  if(f.stringValue!==undefined)return f.stringValue;
+  if(f.integerValue!==undefined)return Number(f.integerValue);
+  if(f.timestampValue!==undefined)return f.timestampValue;
+  return'';
+}
+
+// ======================================================
+// 40 QUESTIONS
+// ======================================================
+const QUESTIONS=[
+  // --- INFORMATIKA ASOSLARI ---
+  {q:"CPU (Markaziy protsessor) qanday asosiy funksiyani bajaradi?",opts:["Ma'lumotlarni saqlash","Ko'rsatmalarni bajarish va hisoblash","Internetga ulanish","Grafikani chiqarish"],cor:1},
+  {q:"RAM (Tasodifiy kirish xotirasi) nima?",opts:["Doimiy saqlash qurilmasi","Protsessorning tarkibiy qismi","Vaqtinchalik tezkor xotira","Tarmoq kartasi"],cor:2},
+  {q:"1 Terabayt (TB) necha Gigabaytga (GB) teng?",opts:["100 GB","512 GB","1000 GB","1024 GB"],cor:3},
+  {q:"Quyidagilardan qaysi biri operatsion tizim hisoblanadi?",opts:["Microsoft Word","Google Chrome","Linux","Adobe Premiere"],cor:2},
+  {q:"WWW (World Wide Web) nima?",opts:["Internetning o'zi","Internetdagi gipermatn hujjatlar tizimi","Elektron pochta protokoli","Tarmoq kabeli turi"],cor:1},
+  // --- TARMOQ ---
+  {q:"IP manzil nima uchun ishlatiladi?",opts:["Fayllarni siqish uchun","Tarmoqdagi qurilmalarni identifikatsiya qilish uchun","Parollarni saqlash uchun","Ekran yorqinligini boshqarish uchun"],cor:1},
+  {q:"DNS (Domain Name System) qanday funksiya bajaradi?",opts:["Fayllarni shifrlaydi","Domen nomlarini IP manzillarga aylantiradi","Tarmoqni kuchaytiradi","Parollarni saqlaydi"],cor:1},
+  {q:"HTTP va HTTPS o'rtasidagi asosiy farq nima?",opts:["HTTPS tezroq ishlaydi","HTTPS ma'lumotlarni shifrlaydi","HTTP yangi versiyasi","Hech qanday farq yo'q"],cor:1},
+  {q:"Router (marshrutizator) qanday vazifani bajaradi?",opts:["Fayllarni saqlaydi","Tarmoqlar o'rtasida ma'lumot yo'naltirishni boshqaradi","Ekranga ma'lumot chiqaradi","Klaviatura signallarini qayta ishlaydi"],cor:1},
+  {q:"MAC manzil nima?",opts:["IP manzilning boshqa nomi","Tarmoq qurilmasining jismoniy (apparat) manzili","Shifrlash kalit","Protokol turi"],cor:1},
+  // --- DASTURLASH ---
+  {q:"Quyidagilardan qaysi biri dasturlash tili emas?",opts:["Python","Java","HTML","Photoshop"],cor:3},
+  {q:"Binary (ikkilik) sanoq sistemasida 1010 qaysi o'nlik songa teng?",opts:["8","10","12","14"],cor:1},
+  {q:"'Bug' atamasi dasturlashda nimani anglatadi?",opts:["Yangi funksiya","Dasturlash tilining turi","Koddagi xato yoki nosozlik","Tezlashtirilgan algoritm"],cor:2},
+  {q:"OOP (Object-Oriented Programming) asosiy tushunchasi qaysi?",opts:["Faqat funksiyalardan foydalanish","Ob'ektlar va klasslar orqali dasturlash","Faqat ikkilik kodda yozish","Faqat veb uchun dasturlash"],cor:1},
+  {q:"'For loop' nima uchun ishlatiladi?",opts:["Xato tutish uchun","Muayyan shart asosida qayta-qayta amallar bajarish uchun","Ma'lumot saqlash uchun","Funksiya e'lon qilish uchun"],cor:1},
+  // --- MA'LUMOTLAR BAZASI ---
+  {q:"Quyidagilardan qaysi biri ma'lumotlar bazasi boshqaruv tizimi (DBMS)?",opts:["Apache","MySQL","Nginx","React"],cor:1},
+  {q:"SQL tilida ma'lumot olish uchun qaysi buyruq ishlatiladi?",opts:["INSERT","UPDATE","SELECT","DELETE"],cor:2},
+  {q:"'Primary Key' nima?",opts:["Jadvalning birinchi ustuni","Har bir qatorni noyob tarzda aniqlovchi maydon","Ikki jadvalni bog'lovchi maydon","Shifrlash kaliti"],cor:1},
+  {q:"NoSQL ma'lumotlar bazasining misolini toping?",opts:["MySQL","PostgreSQL","MongoDB","Oracle"],cor:2},
+  {q:"SQL da 'JOIN' operatori nima uchun ishlatiladi?",opts:["Jadvallarni birlashtirish uchun","Ma'lumot o'chirish uchun","Indeks yaratish uchun","Jadval yaratish uchun"],cor:0},
+  // --- XAVFSIZLIK ---
+  {q:"Firewall (xavfsizlik devori) nima?",opts:["Kompyuterni sovutish tizimi","Ruxsatsiz kirish va chiqishni nazorat qiluvchi tizim","Grafik karta turi","Zaxira quvvat manbai"],cor:1},
+  {q:"'Phishing' hujumi nima?",opts:["Tarmoqni jismoniy buzish","Foydalanuvchilarni aldash orqali shaxsiy ma'lumotlarni o'g'irlash","Fayl tizimini o'chirish","Qurilmani qayta ishga tushirish"],cor:1},
+  {q:"Ransomware nima?",opts:["Antivirus dasturi","Fayllarni shifrlab fidya talab qiluvchi zararli dastur","Tarmoq protokoli","Xotira optimallashtirish dasturi"],cor:1},
+  {q:"Ikki faktorli autentifikatsiya (2FA) nima?",opts:["Ikkita parol kiritish","Ikki xil qurilmadan kirish","Paroldan tashqari qo'shimcha tekshiruv usuli","Ikkita foydalanuvchi nomi"],cor:2},
+  {q:"VPN (Virtual Private Network) nima uchun ishlatiladi?",opts:["Internet tezligini oshirish uchun","Xavfsiz va shifrlangan tarmoq ulanishi yaratish uchun","Tasvirlarni siqish uchun","RAM ni kengaytirish uchun"],cor:1},
+  // --- APPARAT VA TIZIM ---
+  {q:"SSD va HDD o'rtasidagi asosiy farq nima?",opts:["SSD kattaroq hajmga ega","HDD tezroq ishlaydi","SSD harakatlanuvchi qismlarisiz, HDD mexanik diskka ega","HDD kam elektr sarflaydi"],cor:2},
+  {q:"GPU (Grafik protsessor) asosan nima uchun mo'ljallangan?",opts:["Tarmoqni boshqarish","Grafik va parallel hisoblash vazifalari uchun","Xotirani boshqarish","Ovozni qayta ishlash"],cor:1},
+  {q:"BIOS/UEFI nima?",opts:["Operatsion tizim","Apparat va operatsion tizim o'rtasidagi past darajali dasturiy ta'minot","Antivirus dastur","Brauzer turi"],cor:1},
+  {q:"'Cache' xotira nima uchun ishlatiladi?",opts:["Uzoq muddatli saqlash uchun","Tez-tez ishlatiladigan ma'lumotlarni vaqtincha tezkor saqlash uchun","Zaxira nusxa yaratish uchun","Internet ma'lumotlarini saqlash uchun"],cor:1},
+  {q:"USB (Universal Serial Bus) nima?",opts:["Tarmoq protokoli","Qurilmalarni ulash uchun standart interfeys","Dasturlash tili","Operatsion tizim"],cor:1},
+  // --- VEBGA OID ---
+  {q:"HTML nima?",opts:["Dasturlash tili","Veb-sahifalar tuzilmasini belgilovchi til","Ma'lumotlar bazasi tili","Tarmoq protokoli"],cor:1},
+  {q:"CSS nima uchun ishlatiladi?",opts:["Veb sahifalar mantig'ini boshqarish uchun","Veb sahifalar vizual ko'rinishini bezash uchun","Ma'lumot uzatish uchun","Server boshqarish uchun"],cor:1},
+  {q:"REST API nima?",opts:["Ma'lumotlar bazasi turi","HTTP orqali veb-xizmatlar yaratish arxitektura usuli","Antivirus protokoli","Tarmoq kabeli standarti"],cor:1},
+  {q:"'Responsive design' nima?",opts:["Tez yuklanadigan dizayn","Turli ekran o'lchamlariga moslashadigan dizayn","3D dizayn","Animatsiyali dizayn"],cor:1},
+  {q:"Cookie fayllar nima uchun ishlatiladi?",opts:["Viruslardan himoya qilish uchun","Brauzer tomonidan foydalanuvchi ma'lumotlarini vaqtincha saqlash uchun","Fayllarni siqish uchun","Tarmoq tezligini oshirish uchun"],cor:1},
+  // --- ALGORITM VA MANTIQ ---
+  {q:"'Algorithm' so'zi nima ma'noni anglatadi?",opts:["Kompyuter virusi turi","Muammoni hal qilish uchun ketma-ket ko'rsatmalar to'plami","Xotira turi","Tarmoq protokoli"],cor:1},
+  {q:"Qaysi saralash algoritmi eng yomon holatda O(n²) vaqt murakkabligiga ega?",opts:["Merge Sort","Quick Sort (eng yomon holat)","Heap Sort","Binary Search"],cor:1},
+  {q:"Binary Search algoritmi qanday ishlaydi?",opts:["Har bir elementni ketma-ket tekshiradi","Saralangan ro'yxatni yarmiga bo'lib qidiradi","Elementlarni almashtiradi","Ro'yxatni qayta saralaydi"],cor:1},
+  {q:"Stack ma'lumotlar strukturasining ishlash tamoyili qaysi?",opts:["FIFO (birinchi kirgan, birinchi chiqadi)","LIFO (oxirgi kirgan, birinchi chiqadi)","Tasodifiy tartib","Saralangan tartib"],cor:1},
+  {q:"Qaysi avlod tili eng quyi darajada mashina tiliga yaqin?",opts:["Python","Java","Assembly tili","JavaScript"],cor:2},
+  {q:"Rekursiya (recursion) nima?",opts:["Funksiyaning o'zini o'zi chaqirishi","Ikki funksiyaning bir-birini chaqirishi","Siklning muqobili","Xato tutish usuli"],cor:0},
+];
+
+// ======================================================
+// STATE
+// ======================================================
+let userData={};
+let currentQ=0;
+let answers=new Array(40).fill(null);
+let selected=null;
+let qTimerInterval=null;
+let qTimeLeft=60;
+let answered=false;
+let globalTimerInterval=null;
+let globalTimeLeft=90*60; // 5400 seconds = 1.5 soat
+let quizStarted=false;
+
+// ======================================================
+// PAGE NAV
+// ======================================================
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ======================================================
+// LOGIN
+// ======================================================
+async function doLogin(){
+  const phoneRaw=document.getElementById('login-phone').value.trim();
+  const msg=document.getElementById('login-msg');
+  const btn=document.getElementById('login-btn');
+  const spin=document.getElementById('login-spin');
+  const btnText=document.getElementById('login-btn-text');
+
+  if(!phoneRaw){
+    msg.textContent="Telefon raqamni kiriting!";
+    msg.style.display='block';return;
+  }
+
+  // Normalize phone: remove spaces, dashes, parens
+  const phone=phoneRaw.replace(/[\s\-\(\)]/g,'');
+
+  btn.disabled=true;spin.style.display='block';btnText.textContent='Tekshirilmoqda...';
+  msg.style.display='none';
+
+  try{
+    const docs=await fbQuery('participants');
+    // Find by phone (normalize stored phones too)
+    const found=docs.find(d=>{
+      const stored=fv(d.fields?.phone).replace(/[\s\-\(\)]/g,'');
+      return stored===phone;
+    });
+
+    if(!found){
+      msg.textContent="Bu telefon raqam ro'yxatdan topilmadi. Avval ro'yxatdan o'ting.";
+      msg.style.display='block';
+      return;
+    }
+
+    const score=Number(fv(found.fields?.score));
+    const firstName=fv(found.fields?.firstName);
+    const lastName=fv(found.fields?.lastName);
+    const grade=fv(found.fields?.grade);
+    const gender=fv(found.fields?.gender);
+
+    userData={firstName, lastName, grade, phone, gender, score20: score};
+
+    // Check: score < 13 → cannot enter advanced test
+    if(score < 13){
+      msg.textContent=`${firstName}, siz ${score}/20 ball oldingiz. Kengaytirilgan testga kirish uchun kamida 13 ball kerak.`;
+      msg.style.display='block';
+      return;
+    }
+
+    // score >= 13 → start 40q test
+    currentQ=0;
+    answers=new Array(40).fill(null);
+    selected=null;
+    showPage('page-quiz');
+    startGlobalTimer();
+    loadQuestion();
+
+  }catch(e){
+    msg.textContent='Xato: '+e.message;
+    msg.style.display='block';
+  } finally {
+    btn.disabled=false;spin.style.display='none';btnText.textContent='Tekshirish →';
+  }
+}
+
+// ======================================================
+// GLOBAL TIMER (1:30:00)
+// ======================================================
+function startGlobalTimer(){
+  clearInterval(globalTimerInterval);
+  globalTimeLeft=90*60;
+  updateGlobalTimer();
+  quizStarted=true;
+  globalTimerInterval=setInterval(()=>{
+    globalTimeLeft--;
+    updateGlobalTimer();
+    if(globalTimeLeft<=0){
+      clearInterval(globalTimerInterval);
+      clearInterval(qTimerInterval);
+      quizStarted=false;
+      // Time up — force finish
+      forceFinish();
+    }
+  },1000);
+}
+
+function updateGlobalTimer(){
+  const h=Math.floor(globalTimeLeft/3600);
+  const m=Math.floor((globalTimeLeft%3600)/60);
+  const s=globalTimeLeft%60;
+  const display=h>0
+    ?`${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`
+    :`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  document.getElementById('global-timer-display').textContent=display;
+
+  const el=document.getElementById('global-timer');
+  el.className='global-timer';
+  if(globalTimeLeft<=300) el.classList.add('danger');
+  else if(globalTimeLeft<=600) el.classList.add('warn');
+}
+
+function forceFinish(){
+  // save answers as-is, auto-answer unanswered
+  answers.forEach((a,i)=>{ if(a===null) answers[i]=null; });
+  clearInterval(qTimerInterval);
+  showResult(true);
+}
+
+function confirmFinish(){
+  const answered40=answers.filter(a=>a!==null).length;
+  const unanswered=40-answered40;
+  let confirmMsg=`Testni yakunlamoqchimisiz?\n\nJavob berilgan: ${answered40}/40`;
+  if(unanswered>0) confirmMsg+=`\nJavob berilmagan: ${unanswered} ta savol`;
+  if(confirm(confirmMsg)){
+    clearInterval(globalTimerInterval);
+    clearInterval(qTimerInterval);
+    quizStarted=false;
+    showResult(false);
+  }
+}
+
+// ======================================================
+// QUIZ ENGINE
+// ======================================================
+function loadQuestion(){
+  answered=false;selected=null;
+  const q=QUESTIONS[currentQ];
+  const pct=(currentQ/40)*100;
+
+  document.getElementById('q-num').textContent=currentQ+1;
+  document.getElementById('q-total').textContent=40;
+  document.getElementById('q-label').textContent=`SAVOL ${String(currentQ+1).padStart(2,'0')}`;
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('progress-bar').style.width=pct+'%';
+  document.getElementById('btn-next').style.display='none';
+
+  const letters=['A','B','C','D'];
+  const og=document.getElementById('q-options');
+  og.innerHTML='';
+  q.opts.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='option-btn';
+    btn.innerHTML=`<span class="opt-letter">${letters[i]}</span><span>${opt}</span>`;
+    btn.onclick=()=>selectOption(i);
+    og.appendChild(btn);
+  });
+
+  startQTimer();
+}
+
+function startQTimer(){
+  clearInterval(qTimerInterval);
+  qTimeLeft=60;
+  updateQTimer();
+  qTimerInterval=setInterval(()=>{
+    qTimeLeft--;
+    updateQTimer();
+    if(qTimeLeft<=0){clearInterval(qTimerInterval);autoAnswer();}
+  },1000);
+}
+
+function updateQTimer(){
+  document.getElementById('q-timer-display').textContent=qTimeLeft;
+  const badge=document.getElementById('q-timer-badge');
+  if(qTimeLeft<=10) badge.classList.add('urgent');
+  else badge.classList.remove('urgent');
+}
+
+function autoAnswer(){
+  if(answered)return;
+  answered=true;
+  // answers[currentQ] stays null (no answer)
+  showCorrect();
+  document.getElementById('btn-next').style.display='block';
+}
+
+function selectOption(i){
+  if(answered)return;
+  answered=true;
+  selected=i;
+  answers[currentQ]=i;
+  clearInterval(qTimerInterval);
+  showCorrect();
+  document.getElementById('btn-next').style.display='block';
+}
+
+function showCorrect(){
+  const cor=QUESTIONS[currentQ].cor;
+  const btns=document.querySelectorAll('.option-btn');
+  btns.forEach((b,i)=>{
+    b.disabled=true;
+    if(i===cor) b.classList.add('correct');
+    else if(selected!==null && i===selected && selected!==cor) b.classList.add('wrong');
+  });
+}
+
+function nextQuestion(){
+  currentQ++;
+  if(currentQ>=40){
+    clearInterval(globalTimerInterval);
+    clearInterval(qTimerInterval);
+    quizStarted=false;
+    showResult(false);
+    return;
+  }
+  loadQuestion();
+}
+
+// ======================================================
+// RESULT
+// ======================================================
+function showResult(timeUp=false){
+  document.getElementById('progress-bar').style.width='100%';
+  const score=answers.filter((a,i)=>a!==null && a===QUESTIONS[i].cor).length;
+  const pct=Math.round((score/40)*100);
+
+  showPage('page-result');
+
+  // Animate ring
+  const circumf=2*Math.PI*70;
+  const offset=circumf-(score/40)*circumf;
+  const ring=document.getElementById('ring-fill');
+  ring.style.stroke='var(--accent)';
+  ring.style.strokeDasharray=circumf;
+  setTimeout(()=>{ring.style.strokeDashoffset=offset;},100);
+
+  // Animate number
+  let n=0;
+  const step=()=>{if(n<score){n++;document.getElementById('ring-num').textContent=n;setTimeout(step,40);}};
+  setTimeout(step,200);
+
+  document.getElementById('result-verdict').textContent=timeUp?"⏰ Vaqt Tugadi!":"🏁 Test Yakunlandi!";
+  document.getElementById('result-verdict').className='result-verdict pass';
+
+  const answeredCount=answers.filter(a=>a!==null).length;
+  document.getElementById('result-desc').textContent=
+    `${userData.firstName} ${userData.lastName}, siz ${answeredCount}/40 savolga javob berdingiz va ${score} to'g'ri javob berdingiz (${pct}%). Natijangiz leaderboardga saqlanadi.`;
+
+  document.getElementById('result-badges').innerHTML=`
+    <div class="rbadge pass">${score}/40 ball</div>
+    <div class="rbadge neutral">${pct}% to'g'ri</div>
+    <div class="rbadge neutral">${answeredCount} javob berildi</div>
+  `;
+
+  saveAdvancedResult(score, pct, answeredCount);
+}
+
+async function saveAdvancedResult(score, pct, answeredCount){
+  const el=document.getElementById('save-status');
+  el.textContent='⟳ Natija saqlanmoqda...';
+  try{
+    await fbAdd('advanced_results',{
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      grade: userData.grade,
+      phone: userData.phone,
+      gender: userData.gender,
+      score20: userData.score20,
+      score40: score,
+      percent: pct,
+      answeredCount: answeredCount
+    });
+    el.textContent='✓ Natija leaderboardga saqlandi';
+    el.style.color='var(--accent)';
+  }catch(e){
+    el.textContent='⚠ Xato: '+e.message;
+    el.style.color='var(--danger)';
+  }
+}
+
+// ======================================================
+// ADMIN
+// ======================================================
+let adminClickCount=0;
+let adminClickTimer=null;
+
+function adminTriggerClick(){
+  adminClickCount++;
+  clearTimeout(adminClickTimer);
+  adminClickTimer=setTimeout(()=>{adminClickCount=0;},2000);
+  if(adminClickCount>=5){adminClickCount=0;openAdminModal();}
+}
+
+function openAdminModal(){
+  document.getElementById('admin-modal-overlay').classList.add('active');
+  document.getElementById('admin-pass-input').value='';
+  document.getElementById('admin-modal-msg').style.display='none';
+  setTimeout(()=>document.getElementById('admin-pass-input').focus(),100);
+}
+
+function closeAdminModal(){
+  document.getElementById('admin-modal-overlay').classList.remove('active');
+}
+
+function doAdminLogin(){
+  const pass=document.getElementById('admin-pass-input').value;
+  const msg=document.getElementById('admin-modal-msg');
+  if(pass==='itevent27'){
+    closeAdminModal();
+    showPage('page-admin');
+    fetchAdminData();
+  } else {
+    msg.textContent="Parol noto'g'ri!";
+    msg.style.display='block';
+    document.getElementById('admin-pass-input').value='';
+    document.getElementById('admin-pass-input').focus();
+  }
+}
+
+function adminLogout(){showPage('page-welcome');}
+
+async function fetchAdminData(){
+  // Leaderboard
+  const lbTbody=document.getElementById('leaderboard-tbody');
+  const pTbody=document.getElementById('participants-tbody');
+  lbTbody.innerHTML=`<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px;font-family:'Space Mono',monospace;font-size:12px;">Yuklanmoqda...</td></tr>`;
+  pTbody.innerHTML=`<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:24px;font-family:'Space Mono',monospace;font-size:12px;">Yuklanmoqda...</td></tr>`;
+
+  try{
+    const [advDocs, partDocs]=await Promise.all([
+      fbQuery('advanced_results'),
+      fbQuery('participants')
+    ]);
+
+    // Stats
+    const total=partDocs.length;
+    const advanced=advDocs.length;
+    const scores=advDocs.map(d=>Number(fv(d.fields?.score40)));
+    const avg=scores.length? Math.round(scores.reduce((a,b)=>a+b,0)/scores.length) : null;
+    document.getElementById('stat-total').textContent=total;
+    document.getElementById('stat-advanced').textContent=advanced;
+    document.getElementById('stat-avg').textContent=avg!==null?avg+'':'—';
+
+    // LEADERBOARD — sort by score40 desc
+    const sorted=[...advDocs].sort((a,b)=>Number(fv(b.fields?.score40))-Number(fv(a.fields?.score40)));
+    lbTbody.innerHTML='';
+    if(!sorted.length){
+      lbTbody.innerHTML=`<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px;">Hali natija yo'q</td></tr>`;
+    } else {
+      sorted.forEach((doc,idx)=>{
+        const f=doc.fields||{};
+        const s40=Number(fv(f.score40));
+        const pct=Number(fv(f.percent));
+        const time=fv(f.createdAt)?new Date(fv(f.createdAt)).toLocaleString('uz-UZ'):'—';
+        const tr=document.createElement('tr');
+        if(idx===0) tr.className='top1';
+        else if(idx===1) tr.className='top2';
+        else if(idx===2) tr.className='top3';
+
+        let medal='';
+        let scoreClass='normal';
+        if(idx===0){medal='🥇';scoreClass='gold';}
+        else if(idx===1){medal='🥈';scoreClass='silver';}
+        else if(idx===2){medal='🥉';scoreClass='bronze';}
+
+        const barW=Math.round((s40/40)*100);
+        tr.innerHTML=`
+          <td class="rank-cell">${medal||'<span style="color:var(--muted);font-family:Space Mono,monospace;">'+(idx+1)+'</span>'}</td>
+          <td><strong>${fv(f.firstName)} ${fv(f.lastName)}</strong></td>
+          <td style="color:var(--muted);">${fv(f.grade)}</td>
+          <td>
+            <div class="score-bar-wrap">
+              <div class="score-bar"><div class="score-bar-fill" style="width:${barW}%"></div></div>
+              <span class="score-num ${scoreClass}">${s40}/40</span>
+            </div>
+          </td>
+          <td style="font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);">${pct}%</td>
+          <td style="font-size:11px;color:var(--muted);white-space:nowrap;">${time}</td>`;
+        lbTbody.appendChild(tr);
+      });
+    }
+
+    // PARTICIPANTS TABLE
+    const partSorted=[...partDocs].sort((a,b)=>
+      (b.fields?.createdAt?.timestampValue||'').localeCompare(a.fields?.createdAt?.timestampValue||''));
+    pTbody.innerHTML='';
+    if(!partSorted.length){
+      pTbody.innerHTML=`<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:24px;">Ro'yxat bo'sh</td></tr>`;
+    } else {
+      partSorted.forEach((doc,idx)=>{
+        const f=doc.fields||{};
+        const s=Number(fv(f.score));
+        const pass=s>=13;
+        const time=fv(f.createdAt)?new Date(fv(f.createdAt)).toLocaleString('uz-UZ'):'—';
+        const tr=document.createElement('tr');
+        tr.innerHTML=`
+          <td style="color:var(--muted);font-family:'Space Mono',monospace;">${idx+1}</td>
+          <td><strong>${fv(f.firstName)} ${fv(f.lastName)}</strong></td>
+          <td>${fv(f.grade)}</td>
+          <td>${fv(f.phone)}</td>
+          <td><span style="font-family:'Space Mono',monospace;font-size:12px;color:${pass?'var(--accent)':'var(--danger)'};">${s}/20</span></td>
+          <td><span style="font-size:12px;color:${pass?'var(--accent)':'var(--danger)'};">${pass?'✓ O\'tdi':'✗ O\'tmadi'}</span></td>
+          <td style="font-size:11px;color:var(--muted);white-space:nowrap;">${time}</td>
+          <td><button class="del-btn" onclick="handleDel('${doc.name}',this)">O'chirish</button></td>`;
+        pTbody.appendChild(tr);
+      });
+    }
+
+  }catch(e){
+    lbTbody.innerHTML=`<tr><td colspan="6" style="text-align:center;color:var(--danger);padding:24px;">${e.message}</td></tr>`;
+    pTbody.innerHTML=`<tr><td colspan="8" style="text-align:center;color:var(--danger);padding:24px;">${e.message}</td></tr>`;
+  }
+}
+
+async function handleDel(name,btn){
+  if(!confirm("O'chirishga ishonchingiz komilmi?"))return;
+  btn.textContent='...';btn.disabled=true;
+  try{
+    await fbDelete(name);
+    btn.closest('tr').remove();
+    const cur=parseInt(document.getElementById('stat-total').textContent)||0;
+    document.getElementById('stat-total').textContent=Math.max(0,cur-1);
+  }catch(e){
+    alert(e.message);btn.textContent="O'chirish";btn.disabled=false;
+  }
+}
+
+// F2 = Admin modal | Escape = close modal
+document.addEventListener('keydown',e=>{
+  if(e.key==='F2'){openAdminModal();}
+  if(e.key==='Escape'){closeAdminModal();}
+});
+
+document.getElementById('admin-modal-overlay').addEventListener('click',function(e){
+  if(e.target===this)closeAdminModal();
+});
+</script>
+</body>
+</html> 
